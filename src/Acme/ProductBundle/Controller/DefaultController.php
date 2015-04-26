@@ -10,4 +10,19 @@ class DefaultController extends Controller
     {
         return $this->render('AcmeProductBundle:Default:index.html.twig', array('name' => $name));
     }
+
+    public function listAction()
+    {
+        die('list');
+    }
+
+    public function getAction($id)
+    {
+        die('get id:' . $id);
+    }
+
+    public function createAction()
+    {
+        die('create');
+    }
 }
