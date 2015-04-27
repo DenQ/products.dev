@@ -3,6 +3,7 @@
 namespace Acme\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Route;
 
 class DefaultController extends Controller
 {
@@ -13,16 +14,26 @@ class DefaultController extends Controller
 
     public function listAction()
     {
-        die('list');
+        die('product_list');
     }
 
     public function getAction($id)
     {
-        die('get id:' . $id);
+        die('product_get id:' . $id);
     }
 
     public function createAction()
     {
-        die('create');
+        die('product_create');
+    }
+
+    public function editAction($id)
+    {
+        die('product_edit');
+    }
+
+    public function removeAction($id)
+    {
+        die('product_remove');
     }
 }

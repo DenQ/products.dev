@@ -9,7 +9,7 @@ acme_product_list:
         _method: GET
 
 acme_product_get:
-    path:     product/{id}
+    path:     product/{id}/
     defaults: { _controller: AcmeProductBundle:Default:get }
     requirements:
         _method: GET
@@ -17,6 +17,18 @@ acme_product_get:
 
 acme_product_create:
     path:     product/
-    defaults: { _controller: AcmeProductBundle:Default:create }
+    defaults: { _controller: AcmeProductBundle:Default:create}
     requirements:
         _method: POST
+
+acme_product_edit:
+    path:     product/{id}/
+    defaults: { _controller: AcmeProductBundle:Default:edit}
+    requirements:
+        _method: PUT
+
+acme_product_remove:
+    path:     product/{id}/
+    defaults: { _controller: AcmeProductBundle:Default:remove}
+    requirements:
+        _method: DELETE

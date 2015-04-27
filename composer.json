@@ -23,7 +23,9 @@
         "incenteev/composer-parameter-handler": "~2.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "phpunit/phpunit": "4.*",
+        "phpunit/dbunit": ">=1.2"
     },
     "scripts": {
         "post-root-package-install": [
