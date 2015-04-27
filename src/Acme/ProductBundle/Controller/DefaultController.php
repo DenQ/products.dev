@@ -3,7 +3,8 @@
 namespace Acme\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -14,7 +15,9 @@ class DefaultController extends Controller
 
     public function listAction()
     {
-        die('product_list');
+        $response = new Response(json_encode(array('message' => 'product_list')), Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
     public function getAction($id)

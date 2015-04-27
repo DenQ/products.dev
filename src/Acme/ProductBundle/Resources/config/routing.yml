@@ -4,13 +4,13 @@ acme_product_homepage:
 
 acme_product_list:
     path:     products/
-    defaults: { _controller: AcmeProductBundle:Default:list }
+    defaults: { _controller: AcmeProductBundle:Default:list, _format: 'json' }
     requirements:
         _method: GET
 
 acme_product_get:
     path:     product/{id}/
-    defaults: { _controller: AcmeProductBundle:Default:get }
+    defaults: { _controller: AcmeProductBundle:Default:get, _format: 'json' }
     requirements:
         _method: GET
         id: "\d+"
