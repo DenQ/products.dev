@@ -5,7 +5,7 @@ namespace Acme\ProductBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Acme\ProductBundle\Helpers\CurlHelper;
 
-class DefaultControllerTest extends WebTestCase
+class HttpResponseApiTest extends WebTestCase
 {
     public function testList()
     {
