@@ -4,6 +4,7 @@ namespace Acme\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Acme\StoreBundle\Entity\Product;
 
 class DefaultController extends Controller
 {
@@ -26,6 +27,7 @@ class DefaultController extends Controller
 
     public function createAction()
     {
+
         die('product_create');
     }
 
