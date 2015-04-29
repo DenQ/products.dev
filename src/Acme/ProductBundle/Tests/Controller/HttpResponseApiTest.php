@@ -25,8 +25,16 @@ class HttpResponseApiTest extends WebTestCase
 
     public function testCreate()
     {
+//        $url = 'product/';
+//        $result = CurlHelper::Send($url, 'POST');
+////        $this->assertContains('product_create', $result);
+//        $this->assertEquals(200, CurlHelper::GetHttpCode());
         $url = 'product/';
-        $result = CurlHelper::Send($url, 'POST');
+        $result = CurlHelper::Send($url, 'POST', array(
+            'title'=>'title',
+            'description'=>'description',
+            'photo'=>'photo'
+        ));
 //        $this->assertContains('product_create', $result);
         $this->assertEquals(200, CurlHelper::GetHttpCode());
     }

@@ -13,6 +13,8 @@ class CurlHelper {
         curl_setopt(self::$ch, CURLOPT_URL, $url);
         curl_setopt(self::$ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, TRUE);
+        if (!empty($data))
+            curl_setopt(self::$ch, CURLOPT_POSTFIELDS, http_build_query($data));
         return curl_exec(self::$ch);
     }
 
