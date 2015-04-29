@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Acme\ProductBundle\Helpers\CurlHelper;
 
 
-class ReadProductTest  extends WebTestCase
+class ReadProductTest extends WebTestCase
 {
     public function testList()
     {

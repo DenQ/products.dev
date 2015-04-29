@@ -16,10 +16,6 @@ class DefaultController extends Controller
 
     public function listAction()
     {
-//        $response = new Response(json_encode(array('message' => 'product_list')), Response::HTTP_OK);
-//        $response->headers->set('Content-Type', 'application/json');
-//        return $response;
-
         $product = $this->getDoctrine()
             ->getRepository('AcmeStoreBundle:Product')
             ->findAll();
@@ -79,11 +75,34 @@ class DefaultController extends Controller
 
     public function editAction($id)
     {
+        $em = $this->getDoctrine()->getEntityManager();
+        $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('No product found for id ' . $id);
+        }
+        $title = $this->get('request')->request->get('title');
+        $description = $this->get('request')->request->get('description');
+        $photo = $this->get('request')->request->get('photo');
+        if ($title)
+            $product->setTitle($title);
+        if ($description)
+            $product->setDescription($description);
+        if ($photo)
+            $product->setPhoto($photo);
+        $em->flush();
+
         die('product_edit');
     }
 
     public function removeAction($id)
     {
+        $em = $this->getDoctrine()->getEntityManager();
+        $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('No product found for id ' . $id);
+        }
+        $em->remove($product);
+        $em->flush();
         die('product_remove');
     }
 }

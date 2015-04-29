@@ -12,17 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Acme\ProductBundle\Helpers\CurlHelper;
 
 
-class CreateProductTest extends WebTestCase
+class DeleteProductTest extends WebTestCase
 {
     public function testCreate()
     {
-        $url = 'product/';
-        $result = CurlHelper::Send($url, 'POST', array(
-            'title'=>'title',
-            'description'=>'description',
-            'photo'=>'photo'
-        ));
-//        $this->assertContains('product_create', $result);
+        $url = 'product/2/';
+        $result = CurlHelper::Send($url, 'DELETE');
         $this->assertEquals(200, CurlHelper::GetHttpCode());
     }
 }
