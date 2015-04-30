@@ -22,7 +22,7 @@ class CreateProductTest extends WebTestCase
             'description'=>'description',
             'photo'=>'photo'
         ));
-//        $this->assertContains('product_create', $result);
-        $this->assertEquals(200, CurlHelper::GetHttpCode());
+        $this->assertContains('id', $result);
+        $this->assertEquals(201, CurlHelper::GetHttpCode());
     }
 }

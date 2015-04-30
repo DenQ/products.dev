@@ -18,7 +18,6 @@ class ReadProductTest extends WebTestCase
     {
         $url = 'product/1/';
         $result = CurlHelper::Send($url, 'GET');
-//        $this->assertContains('product_get', $result);
         $this->assertEquals(200, CurlHelper::GetHttpCode());
     }
 }

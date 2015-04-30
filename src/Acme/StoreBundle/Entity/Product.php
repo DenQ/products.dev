@@ -107,4 +107,17 @@ class Product
     {
         return $this->photo;
     }
+
+    public function toArray() {
+        return [
+            'id'=>$this->getId(),
+            'title'=>$this->getTitle(),
+            'description'=>$this->getDescription(),
+            'photo'=>$this->getPhoto(),
+        ];
+    }
+
+    public function toJson() {
+        return json_encode($this->toArray());
+    }
 }

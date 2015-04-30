@@ -18,10 +18,10 @@ class UpdateProductTest extends WebTestCase
     {
         $url = 'product/1/';
         $result = CurlHelper::Send($url, 'PUT', array(
-            'title'=>'title',
+            'title'=>'title 1',
             'description'=>'description',
             'photo'=>'photo'
         ));
-        $this->assertEquals(200, CurlHelper::GetHttpCode());
+        $this->assertEquals(204, CurlHelper::GetHttpCode());
     }
 }
