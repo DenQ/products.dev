@@ -9,8 +9,8 @@ use Acme\StoreBundle\Entity\Product;
 
 class DefaultController extends Controller{
 
-    public function indexAction($name) {
-        return $this->render('AcmeProductBundle:Default:index.html.twig', array('name' => $name));
+    public function indexAction() {
+        return $this->render('AcmeProductBundle:Default:index.html.twig');
     }
 
     public function listAction() {

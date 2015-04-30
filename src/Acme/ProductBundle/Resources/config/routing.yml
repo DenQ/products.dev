@@ -1,6 +1,8 @@
-acme_product_homepage:
-    path:     product/hello/{name}
+acme_product_index:
+    path:     product/
     defaults: { _controller: AcmeProductBundle:Default:index }
+    requirements:
+        _method: GET
 
 acme_product_list:
     path:     products/
