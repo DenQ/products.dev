@@ -18,7 +18,7 @@ class UpdateProductTest extends WebTestCase
     {
         $url = 'product/1/';
         $result = CurlHelper::Send($url, 'PUT', array(
-            'title'=>'title 1',
+            'title'=>'title',
             'description'=>'description',
             'photo'=>'photo'
         ));
