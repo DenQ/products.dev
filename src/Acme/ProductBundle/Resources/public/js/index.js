@@ -5,18 +5,9 @@ myApp.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
-myApp.factory('RemoveProduct', function($http) {
-    return function(id) {
-        var responsePromise = $http.delete("/app_dev.php/product/" + id + "/", {}, {});
-        responsePromise.success(function(dataFromServer, status, headers, config) {
-            //$scope.reloadListProduct();
-        });
-        responsePromise.error(function(data, status, headers, config) {
-            console.log("Submitting form failed!");
-        });
-    };
-});
-myApp.controller("ListController", function($scope, $http, RemoveProduct) {
+
+
+myApp.controller("ListController", function($scope, $http) {
 
     $scope.reloadListProduct = function() {
         $scope.products = [];
@@ -31,7 +22,13 @@ myApp.controller("ListController", function($scope, $http, RemoveProduct) {
 
     $scope.removeProduct = function(id) {
         if (confirm('remove')) {
-            RemoveProduct(id);
+            var responsePromise = $http.delete("/app_dev.php/product/" + id + "/", {}, {});
+            responsePromise.success(function(dataFromServer, status, headers, config) {
+                $scope.reloadListProduct();
+            });
+            responsePromise.error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
         }
     }
 
