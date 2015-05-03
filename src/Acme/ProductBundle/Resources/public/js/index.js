@@ -7,14 +7,31 @@ myApp.config(function($interpolateProvider) {
 });
 
 myApp.controller("ListController", function($scope, $http) {
-    $scope.products = [];
-    var responsePromise = $http.get("/app_dev.php/products/", {}, {});
-    responsePromise.success(function(dataFromServer, status, headers, config) {
-        $scope.products = dataFromServer
-    });
-    responsePromise.error(function(data, status, headers, config) {
-        console.log("Submitting form failed!");
-    });
+
+    $scope.reloadListProduct = function() {
+        $scope.products = [];
+        var responsePromise = $http.get("/app_dev.php/products/", {}, {});
+        responsePromise.success(function(dataFromServer, status, headers, config) {
+            $scope.products = dataFromServer;
+        });
+        responsePromise.error(function(data, status, headers, config) {
+            console.log("Submitting form failed!");
+        });
+    }
+
+    $scope.removeProduct = function(id) {
+        if (confirm('remove')) {
+            var responsePromise = $http.delete("/app_dev.php/product/" + id + "/", {}, {});
+            responsePromise.success(function(dataFromServer, status, headers, config) {
+                $scope.reloadListProduct();
+            });
+            responsePromise.error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
+        }
+    }
+
+    $scope.reloadListProduct();
 });
 
 myApp.controller("MyController", function($scope, $http) {
