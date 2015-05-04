@@ -1,12 +1,11 @@
-var myApp = angular.module('myApp', [] );
+var app = angular.module('myApp', [] );
 
-myApp.config(function($interpolateProvider) {
+app.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
 
-
-myApp.controller("ListController", function($scope, $http) {
+app.controller("ListController", function($scope, $http, Json2Request) {
 
     /**
      * Current product
@@ -70,10 +69,7 @@ myApp.controller("ListController", function($scope, $http) {
                 "photo": product.photo
             },
             transformRequest: function(obj) {
-                var str = [];
-                for(var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
+                return Json2Request(obj);
             }
         });
         responsePromise.success(function(dataFromServer, status, headers, config) {
@@ -97,10 +93,7 @@ myApp.controller("ListController", function($scope, $http) {
                 "photo": product.photo
             },
             transformRequest: function(obj) {
-                var str = [];
-                for(var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
+                return Json2Request(obj);
             }
         });
         responsePromise.success(function(dataFromServer, status, headers, config) {
@@ -115,8 +108,17 @@ myApp.controller("ListController", function($scope, $http) {
     $scope.reloadListProduct();
 });
 
-myApp.directive('myCustomer', function() {
+app.directive('myCustomer', function() {
     return {
         templateUrl: '/dialog.html'
     };
 });
+
+app.factory('Json2Request', function(){
+    return function(obj) {
+        var str = [];
+        for(var p in obj)
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+    }
+})
