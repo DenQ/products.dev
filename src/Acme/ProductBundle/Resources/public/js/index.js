@@ -39,7 +39,7 @@ myApp.controller("ListController", function($scope, $http) {
     }
 
     $scope.removeProduct = function(id) {
-        if (confirm('remove')) {
+        if (confirm('Are you sure you want to delete this product?')) {
             var responsePromise = $http.delete("/app_dev.php/product/" + id + "/", {}, {});
             responsePromise.success(function(dataFromServer, status, headers, config) {
                 $scope.reloadListProduct();
