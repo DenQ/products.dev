@@ -51,7 +51,6 @@ myApp.controller("ListController", function($scope, $http) {
     }
 
     $scope.updateProduct = function(product) {
-        //console.log(product)
         $scope.cfdump = "";
         var responsePromise = $http({
             method: "put",
@@ -66,7 +65,13 @@ myApp.controller("ListController", function($scope, $http) {
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             }
-        })
+        });
+        responsePromise.success(function(dataFromServer, status, headers, config) {
+            $scope.reloadListProduct();
+        });
+        responsePromise.error(function(data, status, headers, config) {
+            console.log("Submitting form failed!");
+        });
     }
 
     $scope.reloadListProduct();
