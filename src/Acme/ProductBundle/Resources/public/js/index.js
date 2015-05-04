@@ -9,6 +9,24 @@ myApp.config(function($interpolateProvider) {
 
 myApp.controller("ListController", function($scope, $http) {
 
+    /**
+     * Current product
+     */
+    $scope.product = {
+        title: "",
+        description: ""
+    };
+
+    $scope.editProduct = function(id) {
+        var responsePromise = $http.get("/app_dev.php/product/" + id + "/", {}, {});
+        responsePromise.success(function(dataFromServer, status, headers, config) {
+            $scope.product = dataFromServer;
+        });
+        responsePromise.error(function(data, status, headers, config) {
+            console.log("Submitting form failed!");
+        });
+    }
+
     $scope.reloadListProduct = function() {
         $scope.products = [];
         var responsePromise = $http.get("/app_dev.php/products/", {}, {});
@@ -33,6 +51,12 @@ myApp.controller("ListController", function($scope, $http) {
     }
 
     $scope.reloadListProduct();
+});
+
+myApp.directive('myCustomer', function() {
+    return {
+        templateUrl: '/dialog.html'
+    };
 });
 
 //myApp.controller("MyController", function($scope, $http) {
