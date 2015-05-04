@@ -1,4 +1,3 @@
-// объявляем модуль и присваиваем его переменной myApp
 var myApp = angular.module('myApp', [] );
 
 myApp.config(function($interpolateProvider) {
@@ -13,11 +12,12 @@ myApp.controller("ListController", function($scope, $http) {
      * Current product
      */
     $scope.product = {
-        title: "",
-        description: ""
+        "title": "",
+        description: "",
+        photo: ""
     };
 
-    $scope.editProduct = function(id) {
+    $scope.getProduct = function(id) {
         var responsePromise = $http.get("/app_dev.php/product/" + id + "/", {}, {});
         responsePromise.success(function(dataFromServer, status, headers, config) {
             $scope.product = dataFromServer;
@@ -25,6 +25,14 @@ myApp.controller("ListController", function($scope, $http) {
         responsePromise.error(function(data, status, headers, config) {
             console.log("Submitting form failed!");
         });
+    }
+
+    $scope.emptyProduct = function() {
+        $scope.product = {
+            title: "",
+            description: "",
+            photo: ""
+        };
     }
 
     $scope.reloadListProduct = function() {
@@ -57,7 +65,9 @@ myApp.controller("ListController", function($scope, $http) {
             url: "http://products.dev/app_dev.php/product/" + product.id + "/",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: {
-                "title": product.title
+                "title": product.title,
+                "description": product.description,
+                "photo": product.photo
             },
             transformRequest: function(obj) {
                 var str = [];
@@ -67,6 +77,34 @@ myApp.controller("ListController", function($scope, $http) {
             }
         });
         responsePromise.success(function(dataFromServer, status, headers, config) {
+            $scope.emptyProduct();
+            $scope.reloadListProduct();
+        });
+        responsePromise.error(function(data, status, headers, config) {
+            console.log("Submitting form failed!");
+        });
+    }
+
+    $scope.createProduct = function(product) {
+        $scope.cfdump = "";
+        var responsePromise = $http({
+            method: "POST",
+            url: "http://products.dev/app_dev.php/product/",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: {
+                "title": product.title,
+                "description": product.description,
+                "photo": product.photo
+            },
+            transformRequest: function(obj) {
+                var str = [];
+                for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            }
+        });
+        responsePromise.success(function(dataFromServer, status, headers, config) {
+            $scope.emptyProduct();
             $scope.reloadListProduct();
         });
         responsePromise.error(function(data, status, headers, config) {
@@ -82,32 +120,3 @@ myApp.directive('myCustomer', function() {
         templateUrl: '/dialog.html'
     };
 });
-
-//myApp.controller("MyController", function($scope, $http) {
-//        //var responsePromise = $http.put("/app_dev.php/product/1/", {title:'title 555'}, {});
-//        //var responsePromise = $http.put("/app_dev.php/product/2/", dataObject, {});
-//        //var responsePromise = $http.put("http://products.dev/app_dev.php/product/1/", dataObject, {});
-//    $scope.cfdump = "";
-//    var responsePromise = $http({
-//        method: "put",
-//        url: "http://products.dev/app_dev.php/product/1/",
-//        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-//        data: {
-//            "title": "title 555"
-//        },
-//        transformRequest: function(obj) {
-//            var str = [];
-//            for(var p in obj)
-//                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-//            return str.join("&");
-//        }
-//    });
-//        //responsePromise.success(function(dataFromServer, status, headers, config) {
-//        //    console.log(dataFromServer);
-//        //});
-//        //responsePromise.error(function(data, status, headers, config) {
-//        //    console.log(status);
-//        //    //alert("Submitting form failed!");
-//        //});
-//    //}
-//});
