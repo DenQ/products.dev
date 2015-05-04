@@ -50,6 +50,25 @@ myApp.controller("ListController", function($scope, $http) {
         }
     }
 
+    $scope.updateProduct = function(product) {
+        //console.log(product)
+        $scope.cfdump = "";
+        var responsePromise = $http({
+            method: "put",
+            url: "http://products.dev/app_dev.php/product/" + product.id + "/",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: {
+                "title": product.title
+            },
+            transformRequest: function(obj) {
+                var str = [];
+                for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            }
+        })
+    }
+
     $scope.reloadListProduct();
 });
 
