@@ -16,12 +16,13 @@
                         </span>
 
                         <label>Title</label>
-                        <input type="text" class="form-control" placeholder="Title" ng-model="product.title" title="Title" name="title" ng-maxlength="255" required="" ng-required="true">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="product.title" title="Title" name="title" ng-maxlength="255" ng-required="true" required="">
                         <span style="color:red" ng-show="form.title.$dirty && form.title.$invalid">
                             <span ng-show="form.title.$error.required">Title is required.</span>
                             <span ng-show="form.title.$error.maxlength">Too long!</span>
                             <br />
                         </span>
+
 
                         <label>Description</label>
                         <input type="text" class="form-control" placeholder="Description" ng-model="product.description" title="Description" name="description" ng-maxlength="1000">

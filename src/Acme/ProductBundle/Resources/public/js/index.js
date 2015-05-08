@@ -8,7 +8,7 @@ app.config(function($interpolateProvider) {
 app.controller("ListController", function($scope, $http, Json2Request) {
 
     $scope.products = [];
-    
+
     /**
      * Current product
      */
