@@ -73,8 +73,11 @@ app.controller("ListController", function($scope, $http, Json2Request) {
             }
         })
             .success(function(dataFromServer, status, headers, config) {
-                $scope.emptyProduct();
-                $scope.reloadListProduct();
+                $scope.products.forEach(function(item, index, arr){
+                    if (item.id === product.id) {
+                        arr[index] = product;
+                    }
+                });
             })
             .error(function(data, status, headers, config) {
                 console.log("Submitting form failed!");
