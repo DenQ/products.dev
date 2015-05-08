@@ -122,8 +122,3 @@ app.factory('Json2Request', function(){
         return str.join("&");
     }
 })
-
-app.controller('validateCtrl', function($scope) {
-    $scope.title = 'John Doe';
-    //$scope.email = 'john.doe@gmail.com';
-});

@@ -24,7 +24,7 @@
                         </span>
 
                         <label>Description</label>
-                        <input type="text" class="form-control" placeholder="Description" ng-model="product.description" title="Description" name="description" ng-maxlength="1">
+                        <input type="text" class="form-control" placeholder="Description" ng-model="product.description" title="Description" name="description" ng-maxlength="1000">
                         <span style="color:red" ng-show="form.description.$dirty && form.description.$invalid">
                             <span ng-show="form.description.$error.maxlength">Too long!</span>
                             <br />
@@ -35,8 +35,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="emptyProduct()">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="updateProduct(product)" ng-if="product.id">Save changes</button>
-                <button type="button" class="btn btn-primary" ng-click="createProduct(product)" ng-if="!product.id">Create product</button>
+                <button type="button" class="btn btn-primary" ng-click="updateProduct(product)" ng-if="product.id" ng-disabled="form.$dirty && form.$invalid">Save changes</button>
+                <button type="button" class="btn btn-primary" ng-click="createProduct(product)" ng-if="!product.id" ng-disabled="form.$dirty && form.$invalid">Create product</button>
             </div>
         </div>
     </div>
