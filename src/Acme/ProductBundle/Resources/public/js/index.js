@@ -78,6 +78,7 @@ app.controller("ListController", function($scope, $http, Json2Request) {
                         arr[index] = product;
                     }
                 });
+                $scope.emptyProduct();
             })
             .error(function(data, status, headers, config) {
                 console.log("Submitting form failed!");
