@@ -17,13 +17,13 @@ app.controller("ListController", function($scope, $http, Json2Request) {
     };
 
     $scope.getProduct = function(id) {
-        var responsePromise = $http.get("/app_dev.php/product/" + id + "/", {}, {});
-        responsePromise.success(function(dataFromServer, status, headers, config) {
-            $scope.product = dataFromServer;
-        });
-        responsePromise.error(function(data, status, headers, config) {
-            console.log("Submitting form failed!");
-        });
+        $http.get("/app_dev.php/product/" + id + "/", {}, {})
+            .success(function(dataFromServer, status, headers, config) {
+                $scope.product = dataFromServer;
+            })
+            .error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
     }
 
     $scope.emptyProduct = function() {
@@ -36,30 +36,30 @@ app.controller("ListController", function($scope, $http, Json2Request) {
 
     $scope.reloadListProduct = function() {
         $scope.products = [];
-        var responsePromise = $http.get("/app_dev.php/products/", {}, {});
-        responsePromise.success(function(dataFromServer, status, headers, config) {
-            $scope.products = dataFromServer;
-        });
-        responsePromise.error(function(data, status, headers, config) {
-            console.log("Submitting form failed!");
-        });
+        $http.get("/app_dev.php/products/", {}, {})
+            .success(function(dataFromServer, status, headers, config) {
+                $scope.products = dataFromServer;
+            })
+            .error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
     }
 
     $scope.removeProduct = function(id) {
         if (confirm('Are you sure you want to delete this product?')) {
-            var responsePromise = $http.delete("/app_dev.php/product/" + id + "/", {}, {});
-            responsePromise.success(function(dataFromServer, status, headers, config) {
-                $scope.reloadListProduct();
-            });
-            responsePromise.error(function(data, status, headers, config) {
-                console.log("Submitting form failed!");
-            });
+            $http.delete("/app_dev.php/product/" + id + "/", {}, {})
+                .success(function(dataFromServer, status, headers, config) {
+                    $scope.reloadListProduct();
+                })
+                .error(function(data, status, headers, config) {
+                    console.log("Submitting form failed!");
+                });
         }
     }
 
     $scope.updateProduct = function(product) {
         $scope.cfdump = "";
-        var responsePromise = $http({
+        $http({
             method: "put",
             url: "http://products.dev/app_dev.php/product/" + product.id + "/",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -71,19 +71,19 @@ app.controller("ListController", function($scope, $http, Json2Request) {
             transformRequest: function(obj) {
                 return Json2Request(obj);
             }
-        });
-        responsePromise.success(function(dataFromServer, status, headers, config) {
-            $scope.emptyProduct();
-            $scope.reloadListProduct();
-        });
-        responsePromise.error(function(data, status, headers, config) {
-            console.log("Submitting form failed!");
-        });
+        })
+            .success(function(dataFromServer, status, headers, config) {
+                $scope.emptyProduct();
+                $scope.reloadListProduct();
+            })
+            .error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
     }
 
     $scope.createProduct = function(product) {
         $scope.cfdump = "";
-        var responsePromise = $http({
+        $http({
             method: "POST",
             url: "http://products.dev/app_dev.php/product/",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -95,14 +95,14 @@ app.controller("ListController", function($scope, $http, Json2Request) {
             transformRequest: function(obj) {
                 return Json2Request(obj);
             }
-        });
-        responsePromise.success(function(dataFromServer, status, headers, config) {
-            $scope.emptyProduct();
-            $scope.reloadListProduct();
-        });
-        responsePromise.error(function(data, status, headers, config) {
-            console.log("Submitting form failed!");
-        });
+        })
+            .success(function(dataFromServer, status, headers, config) {
+                $scope.emptyProduct();
+                $scope.reloadListProduct();
+            })
+            .error(function(data, status, headers, config) {
+                console.log("Submitting form failed!");
+            });
     }
 
     $scope.reloadListProduct();
