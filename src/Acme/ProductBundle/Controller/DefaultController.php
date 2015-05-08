@@ -9,10 +9,16 @@ use Acme\StoreBundle\Entity\Product;
 
 class DefaultController extends Controller{
 
+    /**
+     * @return Response
+     */
     public function indexAction() {
         return $this->render('AcmeProductBundle:Default:index.html.twig');
     }
 
+    /**
+     * @return Response
+     */
     public function listAction() {
         $product = $this->getDoctrine()->getRepository('AcmeStoreBundle:Product')->findAll();
         if (!$product)
@@ -20,6 +26,10 @@ class DefaultController extends Controller{
         return $this->createResponse($this->toJson($product));
     }
 
+    /**
+     * @param $id
+     * @return Response
+     */
     public function getAction($id) {
         $product = $this->getDoctrine()->getRepository('AcmeStoreBundle:Product')->find($id);
         if (!$product)
@@ -27,6 +37,10 @@ class DefaultController extends Controller{
         return $this->createResponse($product->toJson());
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function createAction(Request $request) {
         $product = new Product();
         $this->settingProduct($product, $request);
@@ -39,6 +53,11 @@ class DefaultController extends Controller{
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
     public function editAction(Request $request, $id) {
         $em = $this->getDoctrine()->getEntityManager();
         $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
@@ -53,6 +72,10 @@ class DefaultController extends Controller{
         return $this->saveProduct($product, 'PUT');
     }
 
+    /**
+     * @param $id
+     * @return Response
+     */
     public function removeAction($id) {
         $em = $this->getDoctrine()->getEntityManager();
         $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
@@ -69,17 +92,30 @@ class DefaultController extends Controller{
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * @param $product Product
+     * @return mixed
+     */
     private function validateProduct($product) {
         $validator = $this->get('validator');
         return $validator->validate($product);
     }
 
+    /**
+     * @param $product Product
+     * @param $request Request
+     */
     private function settingProduct(& $product, $request) {
         $product->setTitle( $request->get('title') );
         $product->setDescription( $request->get('description') );
         $product->setPhoto( $request->get('photo') );
     }
 
+    /**
+     * @param $product Product
+     * @param string $scenario
+     * @return Response
+     */
     private function saveProduct($product, $scenario = "POST") {
         try {
             $em = $this->getDoctrine()->getEntityManager();
@@ -98,6 +134,10 @@ class DefaultController extends Controller{
         };
     }
 
+    /**
+     * @param $products Product
+     * @return string
+     */
     private function toJson($products) {
         $data = array();
         foreach($products as $item)
@@ -105,6 +145,11 @@ class DefaultController extends Controller{
         return json_encode($data);
     }
 
+    /**
+     * @param $msg
+     * @param int $code
+     * @return Response
+     */
     private function createResponse($msg, $code = Response::HTTP_OK) {
         $response = new Response( $msg, $code);
         $response->headers->set('Content-Type', 'application/json');

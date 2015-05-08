@@ -110,6 +110,9 @@ class Product
         return $this->photo;
     }
 
+    /**
+     * @return array
+     */
     public function toArray() {
         return [
             'id'=>$this->getId(),
@@ -119,6 +122,9 @@ class Product
         ];
     }
 
+    /**
+     * @return string
+     */
     public function toJson() {
         return json_encode($this->toArray());
     }
