@@ -28,24 +28,18 @@ class DefaultController extends Controller{
     }
 
     public function createAction() {
-        $title = $this->requestKey('title');
-        $description = $this->requestKey('description');
-        $photo = $this->requestKey('photo');
-
         $product = new Product();
-        $product->setTitle($title);
-        $product->setDescription($description);
-        $product->setPhoto($photo);
+        $product->setTitle( $this->requestKey('title') );
+        $product->setDescription( $this->requestKey('description') );
+        $product->setPhoto( $this->requestKey('photo') );
 
         $validator = $this->get('validator');
         $errors = $validator->validate($product);
         if (count($errors) > 0) {
             return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
+        } else {
+            return $this->saveProduct($product, 'POST');
         }
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($product);
-        $em->flush();
-        return $this->createResponse(json_encode(array('id'=>$product->getId())), Response::HTTP_CREATED);
     }
 
     public function editAction($id) {
@@ -62,10 +56,7 @@ class DefaultController extends Controller{
         if (count($errors) > 0) {
             return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
         }
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($product);
-        $em->flush();
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $this->saveProduct($product, 'PUT');
     }
 
     public function removeAction($id) {
@@ -76,6 +67,25 @@ class DefaultController extends Controller{
         $em->remove($product);
         $em->flush();
         return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+
+    private function saveProduct($product, $scenario = "POST") {
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($product);
+            $em->flush();
+            $ResponseData = null;
+            $ResponseCode = Response::HTTP_NO_CONTENT;
+            if ($scenario === "POST") {
+                $ResponseData = json_encode(array('id'=>$product->getId()));
+                $ResponseCode = Response::HTTP_CREATED;
+            } return $this->createResponse($ResponseData, $ResponseCode);
+        } catch(\Exception $error) {
+            return $this->createResponse(json_encode([
+                'msg' => $error->getMessage()
+            ]), Response::HTTP_INTERNAL_SERVER_ERROR);
+        };
     }
 
     private function toJson($products) {
