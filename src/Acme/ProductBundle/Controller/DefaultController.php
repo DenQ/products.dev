@@ -31,17 +31,21 @@ class DefaultController extends Controller{
         $title = $this->requestKey('title');
         $description = $this->requestKey('description');
         $photo = $this->requestKey('photo');
-        if ($title && $description && $photo) {
-            $product = new Product();
-            $product->setTitle($title);
-            $product->setDescription($description);
-            $product->setPhoto($photo);
+        $product = new Product();
+        $product->setTitle($title);
+        $product->setDescription($description);
+        $product->setPhoto($photo);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($product);
+        if (count($errors) > 0) {
+            return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
+        } else {
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($product);
             $em->flush();
-        } else
-            throw $this->createNotFoundException('Wrong params');
-        return $this->createResponse(json_encode(array('id'=>$product->getId())), Response::HTTP_CREATED);
+            return $this->createResponse(json_encode(array('id'=>$product->getId())), Response::HTTP_CREATED);
+        }
     }
 
     public function editAction($id) {

@@ -1,6 +1,7 @@
 <?php
 namespace Acme\StoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="product")
@@ -15,12 +16,14 @@ class Product
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255")
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", length=1000)
      */
     protected $description;
 
