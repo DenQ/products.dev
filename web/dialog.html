@@ -6,16 +6,30 @@
                 <h4 class="modal-title" id="myModalLabel">Form product</h4>
             </div>
             <div class="modal-body">
-                <form novalidate class="simple-form">
+                <form name="form" class="simple-form" novalidate="">
                     <div class="form-group">
                         <label>Photo</label>
-                        <input type="text" class="form-control" placeholder="Photo" ng-model="product.photo" title="Photo">
+                        <input type="text" class="form-control" placeholder="Photo" ng-model="product.photo" title="Photo" name="photo" ng-maxlength="1000">
+                        <span style="color:red" ng-show="form.photo.$dirty && form.photo.$invalid">
+                            <span ng-show="form.photo.$error.maxlength">Too long!</span>
+                            <br />
+                        </span>
 
                         <label>Title</label>
-                        <input type="text" class="form-control" placeholder="Title" ng-model="product.title" title="Title">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="product.title" title="Title" name="title" ng-maxlength="255" required="" ng-required="true">
+                        <span style="color:red" ng-show="form.title.$dirty && form.title.$invalid">
+                            <span ng-show="form.title.$error.required">Title is required.</span>
+                            <span ng-show="form.title.$error.maxlength">Too long!</span>
+                            <br />
+                        </span>
 
                         <label>Description</label>
-                        <input type="text" class="form-control" placeholder="Description" ng-model="product.description" title="Description">
+                        <input type="text" class="form-control" placeholder="Description" ng-model="product.description" title="Description" name="description" ng-maxlength="1">
+                        <span style="color:red" ng-show="form.description.$dirty && form.description.$invalid">
+                            <span ng-show="form.description.$error.maxlength">Too long!</span>
+                            <br />
+                        </span>
+
                     </div>
                 </form>
             </div>
