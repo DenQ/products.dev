@@ -31,6 +31,7 @@ class DefaultController extends Controller{
         $title = $this->requestKey('title');
         $description = $this->requestKey('description');
         $photo = $this->requestKey('photo');
+
         $product = new Product();
         $product->setTitle($title);
         $product->setDescription($description);
@@ -40,12 +41,11 @@ class DefaultController extends Controller{
         $errors = $validator->validate($product);
         if (count($errors) > 0) {
             return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
-        } else {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($product);
-            $em->flush();
-            return $this->createResponse(json_encode(array('id'=>$product->getId())), Response::HTTP_CREATED);
         }
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($product);
+        $em->flush();
+        return $this->createResponse(json_encode(array('id'=>$product->getId())), Response::HTTP_CREATED);
     }
 
     public function editAction($id) {
@@ -53,17 +53,17 @@ class DefaultController extends Controller{
         $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
         if (!$product)
             throw $this->createNotFoundException('No product found for id ' . $id);
-        $title = $this->requestKey('title');
-        $description = $this->requestKey('description');
-        $photo = $this->requestKey('photo');
-        if (!$title && !$description && !$photo)
-            throw $this->createNotFoundException('Wrong params');
-        if ($title)
-            $product->setTitle($title);
-        if ($description)
-            $product->setDescription($description);
-        if ($photo)
-            $product->setPhoto($photo);
+        $product->setTitle( $this->requestKey('title') );
+        $product->setDescription( $this->requestKey('description') );
+        $product->setPhoto( $this->requestKey('photo') );
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($product);
+        if (count($errors) > 0) {
+            return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
+        }
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($product);
         $em->flush();
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

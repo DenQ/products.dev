@@ -103,7 +103,6 @@ class Product
 
     /**
      * Get photo
-     *
      * @return string 
      */
     public function getPhoto()
