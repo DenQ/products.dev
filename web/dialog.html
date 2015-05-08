@@ -35,8 +35,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="emptyProduct()">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="updateProduct(product)" ng-if="product.id" ng-disabled="form.$dirty && form.$invalid">Save changes</button>
-                <button type="button" class="btn btn-primary" ng-click="createProduct(product)" ng-if="!product.id" ng-disabled="form.$dirty && form.$invalid">Create product</button>
+                <button type="button" class="btn btn-primary" ng-click="updateProduct(product)" ng-if="product.id"  ng-disabled="form.$dirty && form.$invalid">Save changes</button>
+                <button type="button" class="btn btn-primary" ng-click="createProduct(product)" ng-if="!product.id" ng-disabled="(form.$dirty && form.$invalid) || form.$pristine">Create product</button>
             </div>
         </div>
     </div>
