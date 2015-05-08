@@ -49,7 +49,13 @@ app.controller("ListController", function($scope, $http, Json2Request) {
         if (confirm('Are you sure you want to delete this product?')) {
             $http.delete("/app_dev.php/product/" + id + "/", {}, {})
                 .success(function(dataFromServer, status, headers, config) {
-                    $scope.reloadListProduct();
+                    var s = new Array();
+                    $scope.products.forEach(function(item, index, arr){
+                        if (item.id !== id) {
+                            s.push(item);
+                        }
+                    });
+                    $scope.products = s;
                 })
                 .error(function(data, status, headers, config) {
                     console.log("Submitting form failed!");
@@ -108,6 +114,19 @@ app.controller("ListController", function($scope, $http, Json2Request) {
                 console.log("Submitting form failed!");
             });
     }
+
+
+    $scope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+
+        if (phase == '$apply' || phase == '$digest') {
+            if (fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
 
     $scope.reloadListProduct();
 });
