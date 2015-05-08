@@ -27,14 +27,11 @@ class DefaultController extends Controller{
         return $this->createResponse($product->toJson());
     }
 
-    public function createAction() {
+    public function createAction(Request $request) {
         $product = new Product();
-        $product->setTitle( $this->requestKey('title') );
-        $product->setDescription( $this->requestKey('description') );
-        $product->setPhoto( $this->requestKey('photo') );
+        $this->settingProduct($product, $request);
+        $errors = $this->validateProduct($product);
 
-        $validator = $this->get('validator');
-        $errors = $validator->validate($product);
         if (count($errors) > 0) {
             return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
         } else {
@@ -42,17 +39,14 @@ class DefaultController extends Controller{
         }
     }
 
-    public function editAction($id) {
+    public function editAction(Request $request, $id) {
         $em = $this->getDoctrine()->getEntityManager();
         $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
         if (!$product)
             throw $this->createNotFoundException('No product found for id ' . $id);
-        $product->setTitle( $this->requestKey('title') );
-        $product->setDescription( $this->requestKey('description') );
-        $product->setPhoto( $this->requestKey('photo') );
+        $this->settingProduct($product, $request);
+        $errors = $this->validateProduct($product);
 
-        $validator = $this->get('validator');
-        $errors = $validator->validate($product);
         if (count($errors) > 0) {
             return $this->createResponse(json_encode($errors), Response::HTTP_BAD_REQUEST);
         }
@@ -64,11 +58,27 @@ class DefaultController extends Controller{
         $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
         if (!$product)
             throw $this->createNotFoundException('No product found for id ' . $id);
-        $em->remove($product);
-        $em->flush();
+        try {
+            $em->remove($product);
+            $em->flush();
+        } catch (\Exception $error) {
+            return $this->createResponse(json_encode([
+                'msg' => $error->getMessage()
+            ]), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
+    private function validateProduct($product) {
+        $validator = $this->get('validator');
+        return $validator->validate($product);
+    }
+
+    private function settingProduct(& $product, $request) {
+        $product->setTitle( $request->get('title') );
+        $product->setDescription( $request->get('description') );
+        $product->setPhoto( $request->get('photo') );
+    }
 
     private function saveProduct($product, $scenario = "POST") {
         try {
@@ -93,10 +103,6 @@ class DefaultController extends Controller{
         foreach($products as $item)
             $data[] = $item->toArray();
         return json_encode($data);
-    }
-
-    private function requestKey($key) {
-        return $this->get('request')->request->get($key);
     }
 
     private function createResponse($msg, $code = Response::HTTP_OK) {
