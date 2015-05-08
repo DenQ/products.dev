@@ -7,6 +7,8 @@ app.config(function($interpolateProvider) {
 
 app.controller("ListController", function($scope, $http, Json2Request) {
 
+    $scope.products = [];
+    
     /**
      * Current product
      */
@@ -35,7 +37,6 @@ app.controller("ListController", function($scope, $http, Json2Request) {
     }
 
     $scope.reloadListProduct = function() {
-        $scope.products = [];
         $http.get("/app_dev.php/products/", {}, {})
             .success(function(dataFromServer, status, headers, config) {
                 $scope.products = dataFromServer;
@@ -49,13 +50,13 @@ app.controller("ListController", function($scope, $http, Json2Request) {
         if (confirm('Are you sure you want to delete this product?')) {
             $http.delete("/app_dev.php/product/" + id + "/", {}, {})
                 .success(function(dataFromServer, status, headers, config) {
-                    var s = new Array();
+                    var newScope = new Array();
                     $scope.products.forEach(function(item, index, arr){
                         if (item.id !== id) {
-                            s.push(item);
+                            newScope.push(item);
                         }
                     });
-                    $scope.products = s;
+                    $scope.products = newScope;
                 })
                 .error(function(data, status, headers, config) {
                     console.log("Submitting form failed!");
@@ -114,19 +115,6 @@ app.controller("ListController", function($scope, $http, Json2Request) {
                 console.log("Submitting form failed!");
             });
     }
-
-
-    $scope.safeApply = function(fn) {
-        var phase = this.$root.$$phase;
-
-        if (phase == '$apply' || phase == '$digest') {
-            if (fn && (typeof(fn) === 'function')) {
-                fn();
-            }
-        } else {
-            this.$apply(fn);
-        }
-    };
 
     $scope.reloadListProduct();
 });
