@@ -68,7 +68,7 @@ app.controller("ListController", function($scope, $http, Json2Request) {
         $scope.cfdump = "";
         $http({
             method: "put",
-            url: "http://products.dev/app_dev.php/product/" + product.id + "/",
+            url: "/app_dev.php/product/" + product.id + "/",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: {
                 "title": product.title,
@@ -96,7 +96,7 @@ app.controller("ListController", function($scope, $http, Json2Request) {
         $scope.cfdump = "";
         $http({
             method: "POST",
-            url: "http://products.dev/app_dev.php/product/",
+            url: "/app_dev.php/product/",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: {
                 "title": product.title,
